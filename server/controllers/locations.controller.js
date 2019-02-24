@@ -30,18 +30,25 @@ export default {
           if (nameFound) {
             return res.status(409).send({ error: 'Sublocation already exist' });
           }
-          const total_population = parseInt(male_population, 10) + parseInt(female_population, 10);
-          return SubLocation.create({ name, male_population, female_population, total_population }).then((newsubLocation) => {
-            console.log(newsubLocation.total_population, 'tpp');
+          let total_population;
+          if(male_population && female_population) {
+            total_population = parseInt(male_population, 10) + parseInt(female_population, 10);
+          }
+          return SubLocation.create({ 
+            name: name.trim(), 
+            male_population, 
+            female_population, 
+            total_population 
+            }).then((newsubLocation) => {
             parentFound.subLocations.push(newsubLocation._id);
             console.log(newsubLocation.total_population, 'nrnt')
             parentFound.save();
             return res.status(201).send({
               message: 'New sublocation created successfully',
               name: newsubLocation.name,
-              male_population: newsubLocation.male_population,
-              female_population: newsubLocation.female_population,
-              total_population: parseInt((newsubLocation.male_population + newsubLocation.female_population), 10)
+              male_population: parseInt(newsubLocation.male_population),
+              female_population: parseInt(newsubLocation.female_population),
+              total_population: total_population
             });
 
           });
