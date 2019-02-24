@@ -1,12 +1,23 @@
 import express from 'express';
+import locationsController from './controllers/locations.controller';
 
-const apiUrl = 'api/v1'
+const apiUrl = '/api/v1'
 
 const router = express.Router();
 
-router.get('/hello', (req, res) => {
+router.get(`${apiUrl}`, (req, res) => {
   res.send('Hello from PMS API');
-})
+});
+
+router.post(`${apiUrl}/location`,locationsController.createLocation);
+router.get(`${apiUrl}/locations`, locationsController.getAllLocations);  
+router.delete(`${apiUrl}/mainlocation/:mainlocId`, locationsController.deleteMainLocation);
+router
+  .route(`${apiUrl}/location/:id`)
+  .patch(locationsController.updateLocation)
+  .delete(locationsController.deleteLocation);
+
+
 
 
 export default router;
