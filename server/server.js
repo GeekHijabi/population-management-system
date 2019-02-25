@@ -3,8 +3,8 @@ import bodyParser from 'body-parser';
 import logger from 'morgan';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import config from './server/config/config';
-import routes from './server/routes';
+import config from './config/config';
+import routes from './routes';
 
 dotenv.config();
 

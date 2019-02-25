@@ -2,7 +2,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import mongoose from 'mongoose';
 
-import server from '../server';
+import server from './server';
 
 chai.should();
 chai.use(chaiHttp);
