@@ -9,15 +9,9 @@ export const locationValidator = (req, res, next) => {
   } 
   else if (name && validator.isEmpty(name.trim())) {
     errors.name = 'location name cannot be empty';
-  } 
-  else if (!male_population) {
-    errors.male_population = 'Male population must be supplied';
-  } 
+  }
   else if (male_population && Number.isNaN(parseInt(male_population, 10))) {
-    errors.maleResidents = 'Male population should be a number';
-  } 
-  else if (!female_population) {
-    errors.female_population = 'Female population must be supplied';
+    errors.male_population = 'Male population should be a number';
   } 
   else if (female_population && Number.isNaN(parseInt(female_population, 10))) {
     errors.female_population = 'Female population should be a number';

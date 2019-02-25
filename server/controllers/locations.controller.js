@@ -41,14 +41,14 @@ export default {
             total_population 
             }).then((newsubLocation) => {
             parentFound.subLocations.push(newsubLocation._id);
-            console.log(newsubLocation.total_population, 'nrnt')
             parentFound.save();
             return res.status(201).send({
               message: 'New sublocation created successfully',
               name: newsubLocation.name,
               male_population: parseInt(newsubLocation.male_population),
               female_population: parseInt(newsubLocation.female_population),
-              total_population: total_population
+              total_population: total_population,
+              id: newsubLocation._id
             });
 
           });
@@ -74,6 +74,8 @@ export default {
         res.status(404).send({
           error: 'No locations created yet'
         })
+      }).catch(() => {
+        res.status(500).send({ error: 'something went wrong' })
       })
   },
 
@@ -101,9 +103,8 @@ export default {
         if (error) {
           return res.status(404).send({ error: 'Location not found' });
         }
-        console.log(updatedSubLocation, 'us');
         return res.status(200).send({
-          message: 'Sublocation details updated successfully',
+          message: 'location details updated successfully',
           updatedSubLocation
         });
       }
@@ -112,14 +113,13 @@ export default {
   },
 
   deleteLocation(req, res) {
-    const { id } = req.params;
-    SubLocation.findOne({ _id: id }).exec().then((locFound) => {
+    const { subId } = req.params;
+    SubLocation.findOne({ _id: subId }).exec().then((locFound) => {
       if(!locFound) {
         return res.status(404).send({ error: 'Location not found' });
       }
-      Location.findById(locFound.subLocations).exec().then((sing) => {
-        console.log(sing, 'sggg');
-        const locId = sing.subLocations;
+      Location.findById(locFound.subLocations).exec().then((loc) => {
+        const locId = loc.subLocations;
         for (let i = 0; i < locId.length; i++) {
           if(locId[i] === id) {
             locId.splice(i, 1);
@@ -129,7 +129,6 @@ export default {
         return res.status(500).send({ error: 'something went wrong' });
       })
       SubLocation.findByIdAndRemove(id, (error) => {
-        console.log(id, '<<<><')
         if(error) {
           return res.status(500).send('Something went wrong');
         }
