@@ -4,10 +4,10 @@
   "description": "Population management system",
   "main": "index.js",
   "scripts": {
+    "build": "babel ./server --out-dir dist/ --copy-files",
+    "start": "npm run build && node dist/server.js",
     "test": "nyc --reporter=html --reporter=text mocha --timeout 60000 --require @babel/register server/locations.controller.test.js --exit",
-    "dev": "nodemon --watch server --exec babel-node server.js",
-    "undo:migrate": "sequelize db:migrate:undo:all",
-    "migrate": "sequelize db:migrate"
+    "dev": "nodemon --watch server --exec babel-node server.js"
   },
   "author": "Hamdalah",
   "license": "ISC",
@@ -20,6 +20,11 @@
     "mongodb": "^3.1.13",
     "mongoose": "^5.4.15",
     "morgan": "^1.9.1",
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.3",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/register": "^7.0.0",
     "pg": "^7.8.1",
     "pg-hstore": "^2.3.2",
     "sequelize": "^4.42.0",
@@ -38,5 +43,9 @@
     "mocha": "^6.0.1",
     "nodemon": "^1.18.10",
     "nyc": "^13.3.0"
+  },
+  "engines": {
+    "node": "8.11.2",
+    "npm": "6.1.0"
   }
 }
