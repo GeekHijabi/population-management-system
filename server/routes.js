@@ -13,10 +13,8 @@ router.get(`${apiUrl}`, (req, res) => {
 router.post(`${apiUrl}/location`,locationValidator, locationsController.createLocation);
 router.get(`${apiUrl}/locations`, locationsController.getAllLocations);  
 router.delete(`${apiUrl}/mainlocation/:mainlocId`, locationsController.deleteMainLocation);
-router
-  .route(`${apiUrl}/location/:id`)
-  .patch(locationsController.updateLocation)
-  .delete(locationsController.deleteLocation);
+router.patch(`${apiUrl}/location/:id`, locationsController.updateLocation)
+router.delete(`${apiUrl}/location/:subId`, locationsController.deleteLocation);
 
 
 
