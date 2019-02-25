@@ -93,9 +93,9 @@ export default {
       subLocationUpdate.female_population = female_population;
     }
     if (Object.keys(subLocationUpdate).length === 0 && subLocationUpdate.constructor === Object) {
-      return res.status(200).send({ message: 'No field to update' });
+      return res.status(404).send({ message: 'No field to update' });
     }
-    SubLocation.findByIdAndUpdate(
+    SubLocation.findOneAndUpdate(
       { _id: id },
       { $set: subLocationUpdate },
       { new: true },
@@ -114,31 +114,33 @@ export default {
 
   deleteLocation(req, res) {
     const { subId } = req.params;
-    SubLocation.findOne({ _id: subId }).exec().then((locFound) => {
+    SubLocation.findOne({ _id: subId }).then((locFound) => {
       if(!locFound) {
         return res.status(404).send({ error: 'Location not found' });
       }
       Location.findById(locFound.subLocations).exec().then((loc) => {
         const locId = loc.subLocations;
         for (let i = 0; i < locId.length; i++) {
-          if(locId[i] === id) {
+          if(locId[i] === subId) {
             locId.splice(i, 1);
           };
         };
       }).catch(() => {
         return res.status(500).send({ error: 'something went wrong' });
       })
-      SubLocation.findByIdAndRemove(id, (error) => {
+      SubLocation.findByIdAndRemove(subId, (error) => {
         if(error) {
           return res.status(500).send('Something went wrong');
         }
         return res.status(200).send({ message: 'Location successfully deleted' })
       })
+    }).catch(() => {
+        return res.status(500).send({ error: 'Something went wrong' });
     })
   },
 
   deleteMainLocation(req, res) {
-    const { mainlocId } = req.params
+    const { mainlocId } = req.params;
     Location.findByIdAndRemove(mainlocId).exec().then((location) => {
       if (!location) {
         return res.status(404).send({message: 'Location does not exist'})

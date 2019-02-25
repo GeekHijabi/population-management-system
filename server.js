@@ -2,22 +2,17 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import logger from 'morgan';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 import config from './server/config/config';
-import 'dotenv';
 import routes from './server/routes';
 
-// data base connection
-mongoose.connect(config.db);
-const db = mongoose.connection;
+dotenv.config();
 
-db.on('error', (err) => {
-  console.error('Connection error: ', err);
-});
-
-db.once('open', () => {
-  console.log('Database connection successful');
-});
-
+if (process.env.NODE_ENV === 'test') {
+  mongoose.connect(config.test);
+} else {
+  mongoose.connect(config.db);
+}
 
 const app = express();
 const port = process.env.PORT || 3000;

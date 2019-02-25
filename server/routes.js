@@ -14,7 +14,7 @@ router.post(`${apiUrl}/location`,locationValidator, locationsController.createLo
 router.get(`${apiUrl}/locations`, locationsController.getAllLocations);  
 router.delete(`${apiUrl}/mainlocation/:mainlocId`, locationsController.deleteMainLocation);
 router.patch(`${apiUrl}/location/:id`, locationsController.updateLocation)
-router.delete(`${apiUrl}/location/:subId`, locationsController.deleteLocation);
+router.delete(`${apiUrl}/sublocation/:subId`, locationsController.deleteLocation);
 
 
 
